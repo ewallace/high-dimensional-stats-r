@@ -886,11 +886,13 @@ we'd observe results as extreme or more extreme under the null hypothesis
 many more than 20 such tests, we can expect that for a lot of the tests, the
 null hypothesis is true, but we will still observe extreme results.
 To demonstrate this, it's useful to see what happens if
-we scramble age and run the same test again:
+we permute (scramble) age and run the same test again:
 
 ```{r volcplotfake, fig.cap="Plotting p-values against effect sizes for a randomised outcome shows we still observe 'significant' results.", fig.alt="Plot of -log10(p) against effect size estimates for a regression of a made-up feature against methylation level for each feature in the data. A dashed line represents a 0.05 significance level."}
 
-age_perm <- age[sample(ncol(methyl_mat), ncol(methyl_mat))]
+# make age_perm, a random permutation of age
+set.seed(42) # ensure same pseudorandom permutation every time
+age_perm <- sample(age)
 design_age_perm <- model.matrix(~age_perm)
 
 fit_age_perm <- lmFit(methyl_mat, design = design_age_perm)
